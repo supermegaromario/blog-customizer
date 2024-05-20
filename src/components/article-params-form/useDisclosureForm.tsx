@@ -11,24 +11,31 @@ export const useDisclosureForm = ({
 	setIsOpen,
 	wrapperRef,
 }: UseDisclosureFormProps) => {
-	function handleArrowButtonClick() {
+	const handleArrowButtonClick = () => {
 		setIsOpen(!isOpen);
-	}
+	};
 
 	useEffect(() => {
-		function handleOutsideClick(event: MouseEvent) {
+		if (!isOpen) {
+			return;
+		}
+
+		const handleOutsideClick = (event: MouseEvent) => {
 			const { target } = event;
 			if (target instanceof Node && !wrapperRef.current?.contains(target)) {
 				setIsOpen(false);
 			}
-		}
+		};
 
 		const handleEscape = (event: KeyboardEvent) => {
-			if (event.key == 'Escape') setIsOpen(false);
+			if (event.key === 'Escape') {
+				setIsOpen(false);
+			}
 		};
 
 		document.addEventListener('mousedown', handleOutsideClick);
 		document.addEventListener('keydown', handleEscape);
+
 		return () => {
 			document.removeEventListener('mousedown', handleOutsideClick);
 			document.removeEventListener('keydown', handleEscape);

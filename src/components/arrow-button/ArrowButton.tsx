@@ -1,6 +1,5 @@
 import arrow from 'src/images/arrow.svg';
 import styles from './ArrowButton.module.scss';
-import { useEffect, useState } from 'react';
 import { clsx } from 'clsx';
 
 /** Функция для обработки открытия/закрытия формы */
@@ -11,19 +10,15 @@ type ArrowButtonProps = {
 };
 
 export const ArrowButton = ({ onClick, isContainerOpen }: ArrowButtonProps) => {
-	const [isOpen, setIsOpen] = useState(isContainerOpen);
 	const imageClassName = clsx({
 		[styles.arrow]: true,
-		[styles.arrow_open]: isOpen,
-	});
-	const containerClassName = clsx({
-		[styles.container]: true,
-		[styles.container_open]: isOpen,
+		[styles.arrow_open]: isContainerOpen,
 	});
 
-	useEffect(() => {
-		setIsOpen(isContainerOpen);
-	}, [isContainerOpen]);
+	const containerClassName = clsx({
+		[styles.container]: true,
+		[styles.container_open]: isContainerOpen,
+	});
 	return (
 		/* Не забываем указаывать role и aria-label атрибуты для интерактивных элементов */
 		<div

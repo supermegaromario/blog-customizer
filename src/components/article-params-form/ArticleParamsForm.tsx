@@ -30,11 +30,7 @@ export const ArticleParamsForm = ({
 	setParams,
 }: ArticleParamsFormProps) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [state, setState] = useState(params);
-	const asideClassName = clsx({
-		[styles.container]: true,
-		[styles.container_open]: isOpen,
-	});
+	const [articleParams, setArticleParams] = useState(params);
 
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
 
@@ -44,32 +40,38 @@ export const ArticleParamsForm = ({
 		wrapperRef,
 	});
 
-	function handleInputChanges(value: OptionType) {
-		if (fontFamilyOptions.includes(value)) {
-			setState({ ...state, fontFamilyOption: value });
-		}
-		if (fontColors.includes(value)) {
-			setState({ ...state, fontColor: value });
-		}
-		if (backgroundColors.includes(value)) {
-			setState({ ...state, backgroundColor: value });
-		}
-		if (contentWidthArr.includes(value)) {
-			setState({ ...state, contentWidth: value });
-		}
-		if (fontSizeOptions.includes(value)) {
-			setState({ ...state, fontSizeOption: value });
-		}
-	}
+	const asideClassName = clsx(styles.container, {
+		[styles.container_open]: isOpen,
+	});
+
+	const handleFontFamilyChange = (value: OptionType) => {
+		setArticleParams({ ...articleParams, fontFamilyOption: value });
+	};
+
+	const handleFontColorChange = (value: OptionType) => {
+		setArticleParams({ ...articleParams, fontColor: value });
+	};
+
+	const handleBackgroundColorChange = (value: OptionType) => {
+		setArticleParams({ ...articleParams, backgroundColor: value });
+	};
+
+	const handleContentWidthChange = (value: OptionType) => {
+		setArticleParams({ ...articleParams, contentWidth: value });
+	};
+
+	const handleFontSizeChange = (value: OptionType) => {
+		setArticleParams({ ...articleParams, fontSizeOption: value });
+	};
 
 	const handleReset = () => {
-		setState(defaultArticleState);
+		setArticleParams(defaultArticleState);
 		setParams(defaultArticleState);
 	};
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		setParams(state);
+		setParams(articleParams);
 	};
 
 	return (
@@ -84,36 +86,36 @@ export const ArticleParamsForm = ({
 						{'Задайте параметры'}
 					</Text>
 					<Select
-						selected={state.fontFamilyOption}
+						selected={articleParams.fontFamilyOption}
 						options={fontFamilyOptions}
 						title={'Шрифт'}
-						onChange={handleInputChanges}
+						onChange={handleFontFamilyChange}
 					/>
 					<RadioGroup
 						name={'fontSize'}
-						selected={state.fontSizeOption}
+						selected={articleParams.fontSizeOption}
 						options={fontSizeOptions}
 						title={'Размер шрифта'}
-						onChange={handleInputChanges}
+						onChange={handleFontSizeChange}
 					/>
 					<Select
-						selected={state.fontColor}
+						selected={articleParams.fontColor}
 						options={fontColors}
 						title={'Цвет шрифта'}
-						onChange={handleInputChanges}
+						onChange={handleFontColorChange}
 					/>
 					<Separator />
 					<Select
-						selected={state.backgroundColor}
+						selected={articleParams.backgroundColor}
 						options={backgroundColors}
 						title={'Цвет фона'}
-						onChange={handleInputChanges}
+						onChange={handleBackgroundColorChange}
 					/>
 					<Select
-						selected={state.contentWidth}
+						selected={articleParams.contentWidth}
 						options={contentWidthArr}
 						title={'Ширина контента'}
-						onChange={handleInputChanges}
+						onChange={handleContentWidthChange}
 					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset' />
